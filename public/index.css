@@ -1,0 +1,45 @@
+#game-area {
+    width: 400px;
+    height: 500px;
+    margin: 0 auto;
+    border: 1px solid black;
+    position: relative;
+}
+
+/* 球的樣式 */
+#ball {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: red;
+    position: absolute;
+}
+
+/* 板子的樣式 */
+#paddle {
+    width: 100px;
+    height: 10px;
+    background-color: blue;
+    position: absolute;
+    bottom: 0;
+}
+
+/* 磚塊的樣式 */
+.brick {
+    width: 50px;
+    height: 20px;
+    background-color: green;
+    position: absolute;
+}
+
+#message {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    display: block;
+    white-space: pre;
+}
