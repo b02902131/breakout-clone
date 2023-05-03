@@ -15,6 +15,7 @@ let paddleSpeed = 20;
 
 let score = 0;
 let lives = 3;
+let brickBreakCount = 0;
 
 let gameIsPlaying = false;
 let gameIsEnd = false;
@@ -80,29 +81,12 @@ const gameLoop = function () {
     }
     // 超出底部邊界，扣一條命
     if (ballY > gameAreaHeight - ball.offsetHeight) {
-        lives--;
-        // 如果沒有命了，結束遊戲
-        if (lives === 0) {
-            endGame('Game over!');
-        } else {
-            ballX = 200;
-            ballY = 250;
-            ballSpeedX = 5;
-            ballSpeedY = 5;
-            ball.style.left = ballX + 'px';
-            ball.style.top = ballY + 'px';
-        }
+        handleMiss();
     }
     // 球碰到磚塊，磚塊消失
     for (let i = 0; i < brickCount; i++) {
         if (ballY <= bricks[i].offsetTop + bricks[i].offsetHeight && ballX + ball.offsetWidth >= bricks[i].offsetLeft && ballX <= bricks[i].offsetLeft + bricks[i].offsetWidth) {
-            ballSpeedY = -ballSpeedY;
-            bricks[i].style.display = 'none';
-            score++;
-            // 如果全部磚塊都被擊碎，結束遊戲
-            if (score === brickCount) {
-                endGame('You win!');
-            }
+            handleCollision(bricks[i]);
         }
     }
 
@@ -146,4 +130,51 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
-console.log('hello world');
+// == score and lives ==
+const livesElement = document.getElementById('lives');
+const scoreElement = document.getElementById('score');
+
+const updateLives = function () {
+    livesElement.innerHTML = `Lives: ${lives}`;
+}
+
+const updateScore = function () {
+    scoreElement.innerHTML = `Score: ${score}`;
+}
+
+// 初始化時更新元素
+updateLives();
+updateScore();
+
+const handleCollision = function (brick) {
+    // 撞到磚塊時的處理邏輯
+    ballSpeedY = -ballSpeedY;
+    brick.style.display = 'none';
+    score += 10;
+    brickBreakCount += 1;
+    // 如果全部磚塊都被擊碎，結束遊戲
+    if (brickBreakCount === brickCount) {
+        endGame('You win!');
+    }
+    // 獲得10分
+    updateScore();
+}
+
+const handleMiss = function () {
+    // 沒有接到球時的處理邏輯
+    // 失去一條生命
+    lives -= 1;
+    // 如果沒有命了，結束遊戲
+    if (lives === 0) {
+        endGame('Game over!');
+    } else {
+        ballX = 200;
+        ballY = 250;
+        ballSpeedX = 5;
+        ballSpeedY = 5;
+        ball.style.left = ballX + 'px';
+        ball.style.top = ballY + 'px';
+    }
+    updateLives();
+}
+
