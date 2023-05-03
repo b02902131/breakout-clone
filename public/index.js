@@ -15,6 +15,8 @@ let paddleSpeed = 20;
 let score = 0;
 let lives = 3;
 
+let gameIsPlaying = false;
+
 // 取得遊戲區域的寬度和高度
 const gameAreaWidth = gameArea.offsetWidth;
 const gameAreaHeight = gameArea.offsetHeight;
@@ -120,12 +122,12 @@ const startGame = function () {
     // 隱藏提示文字
     const startMessage = document.getElementById('start-message');
     startMessage.style.display = 'none';
-
+    gameIsPlaying = true;
     gameLoop();
 }
 
 document.addEventListener('keydown', function (event) {
-    if (event.code === 'Space') {
+    if (event.code === 'Space' && !gameIsPlaying) {
         startGame();
     }
 });
