@@ -32,7 +32,7 @@
     position: absolute;
 }
 
-#start-message {
+#message {
     position: absolute;
     top: 45%;
     left: 50%;
@@ -41,4 +41,5 @@
     color: rgb(0, 0, 0);
     text-align: center;
     display: block;
+    white-space: pre;
 }

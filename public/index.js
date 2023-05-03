@@ -2,6 +2,7 @@ const gameArea = document.getElementById('game-area');
 const ball = document.getElementById('ball');
 const paddle = document.getElementById('paddle');
 const bricks = document.getElementsByClassName('brick');
+const messageDiv = document.getElementById("message");
 const brickCount = bricks.length;
 
 let ballX = 200;
@@ -16,6 +17,8 @@ let score = 0;
 let lives = 3;
 
 let gameIsPlaying = false;
+let gameIsEnd = false;
+let gameLoopAnimationId;
 
 // 取得遊戲區域的寬度和高度
 const gameAreaWidth = gameArea.offsetWidth;
@@ -77,7 +80,7 @@ const gameLoop = function () {
     }
     // 超出底部邊界，扣一條命
     if (ballY > gameAreaHeight - ball.offsetHeight) {
-        // lives--;
+        lives--;
         // 如果沒有命了，結束遊戲
         if (lives === 0) {
             endGame('Game over!');
@@ -104,24 +107,33 @@ const gameLoop = function () {
     }
 
     // 繼續遊戲循環
-    requestAnimationFrame(gameLoop);
+    if (!gameIsEnd && gameIsPlaying) {
+        gameLoopAnimationId = requestAnimationFrame(gameLoop);
+    }
 }
 
 // 結束遊戲函數
 const endGame = function (message) {
-    // 停止遊戲循環
-    cancelAnimationFrame(gameLoop);
+    console.log(message);
+    gameIsEnd = true;
     // 顯示遊戲結束訊息
-    alert(message);
-    // 重新載入頁面
-    location.reload();
+    showMessage(`${message}\nPress Space to restart`);
+}
+
+const showMessage = function (message) {
+    console.log(message);
+    messageDiv.style.display = 'block';
+    messageDiv.innerHTML = message;
+}
+
+const hideMessage = function () {
+    messageDiv.style.display = 'none';
 }
 
 // 開始遊戲循
 const startGame = function () {
     // 隱藏提示文字
-    const startMessage = document.getElementById('start-message');
-    startMessage.style.display = 'none';
+    hideMessage()
     gameIsPlaying = true;
     gameLoop();
 }
@@ -129,5 +141,9 @@ const startGame = function () {
 document.addEventListener('keydown', function (event) {
     if (event.code === 'Space' && !gameIsPlaying) {
         startGame();
+    } else if (event.code === 'Space' && gameIsEnd) {
+        location.reload();
     }
 });
+
+console.log('hello world');
