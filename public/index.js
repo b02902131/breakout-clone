@@ -6,8 +6,8 @@ const brickCount = bricks.length;
 
 let ballX = 200;
 let ballY = 250;
-let ballSpeedX = 5;
-let ballSpeedY = 5;
+let ballSpeedX = -5;
+let ballSpeedY = -5;
 
 let paddleX = 150;
 let paddleSpeed = 20;
@@ -117,6 +117,10 @@ const endGame = function (message) {
 
 // 開始遊戲循
 const startGame = function () {
+    // 隱藏提示文字
+    const startMessage = document.getElementById('start-message');
+    startMessage.style.display = 'none';
+
     gameLoop();
 }
 
